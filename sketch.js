@@ -4,7 +4,10 @@ const CANVAS_SIZE = 700;
 
 function preload() {
   // Load the fragment shader
-  myShader = loadShader("shader.vert", "shader.frag");
+  myShader = loadShader(
+    "./shader_code/shader.vert",
+    "./shader_code/shader.frag"
+  );
 }
 
 function setup() {

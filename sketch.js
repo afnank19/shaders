@@ -11,7 +11,7 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(CANVAS_SIZE, CANVAS_SIZE, WEBGL); // Use WEBGL mode for shaders
+  createCanvas(windowWidth, windowHeight, WEBGL); // Use WEBGL mode for shaders
   noStroke(); // Optional: remove outlines
 }
 
@@ -19,14 +19,14 @@ function draw() {
   shader(myShader); // Apply the shader
 
   // Pass the resolution to the shader as a uniform
-  myShader.setUniform("u_resolution", [CANVAS_SIZE, CANVAS_SIZE]);
+  myShader.setUniform("u_resolution", [windowWidth, windowHeight]);
   myShader.setUniform("u_time", millis() / 1000.0);
   myShader.setUniform("u_mouse", [mouseX, mouseY]);
 
   // Draw a rectangle to fill the canvas
-  rect(0 - width, 0 - height, CANVAS_SIZE * 2, CANVAS_SIZE * 2);
+  rect(0 - windowWidth, 0 - windowHeight, windowWidth * 2, windowHeight * 2);
 }
 
-// function windowResized() {
-//   resizeCanvas(windowWidth, windowHeight);
-// }
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+}

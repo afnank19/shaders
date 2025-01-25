@@ -29,7 +29,7 @@ vec3 palette( in float t )
     vec3 a = vec3(0.5, 0.5, 0.5);
     vec3 b = vec3(0.5, 0.5, 0.5);
     vec3 c = vec3(1.0, 1.0, 1.0);
-    vec3 d = vec3(0.30, 0.20, 0.20);
+    vec3 d = vec3(0.00, 0.10, 0.20);
 
     return a + b*cos( 6.283185*(c*t+d) );
 }
@@ -41,22 +41,26 @@ void main() {
 	// gl_FragColor = vec4(st.x,normalized_mouse.x,normalized_mouse.y,1.0);
     vec2 st = (2.0 * gl_FragCoord.xy - u_resolution.xy )/u_resolution.y;
     vec2 uv0 = st;
+    vec3 finalColor = vec3(0.);
 
     // st.x *= 6.14;
-    st = fract(st * 1.) - 0.5;
 
-    // float d = length(vec2(st.x, st.y));
-    float d = sdCircle(st, 0.5 );
-    // float d = sdBox(st, vec2(0.5, 0.5));
+    for (float i = 0.; i < 3.0; i++) {
+        st = fract(st * 1.5) - 0.5;
+        vec3 col = palette(length(uv0 * 1.5) + i*.4 + u_time / 2.);
+        // float d = length(vec2(st.x, st.y));
+        float d = sdCircle(st, 0.5 );
+        // float d = sdBox(st, vec2(0.5, 0.5)) - 0.1;
     
-    vec3 col = palette(length(uv0) + u_time / 2.);
-    d = abs(sin(d * 16. + u_time) / 16.);
-    d = 0.015/d;
-    // d = smoothstep(0.0, 0.1, d );
-    // d = 1. - d;
+        d = abs(sin(d * 8. + u_time) / 8.);
+        d = 0.02/d;
+        d = pow(d, 1.1);
+        // d = smoothstep(0.0, 0.1, d );
+        // d = 1. - d;
 
-    col *= d;
+        finalColor += col * d;
+    }
 
-	gl_FragColor = vec4(col,1.0);
+	gl_FragColor = vec4(finalColor,1.0);
 }
 

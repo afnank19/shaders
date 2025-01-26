@@ -10,7 +10,7 @@ vec3 palette( in float t )
     vec3 a = vec3(0.5, 0.5, 0.5);
     vec3 b = vec3(0.5, 0.5, 0.5);
     vec3 c = vec3(1.0, 1.0, 1.0);
-    vec3 d = vec3(0.00, 0.10, 0.20);
+    vec3 d = vec3(0.99, 0.11, 0.17);
 
     return a + b*cos( 6.283185*(c*t+d) );
 }
@@ -21,10 +21,18 @@ float sdRoundedX( in vec2 p, in float w, in float r )
     return length(p-min(p.x+p.y,w)*0.5) - r;
 }
 
+mat2 rotate2d(float _angle){
+    return mat2(cos(_angle),-sin(_angle),
+                sin(_angle),cos(_angle));
+}
+
+
 void main() {
     vec2 st = (2.0 * gl_FragCoord.xy - u_resolution.xy )/u_resolution.y;
     vec2 uv0 = st;
     vec3 fc = vec3(.0);
+
+    st = rotate2d( (u_time)/6. ) * st;
 
 
     for (float i = 0.0; i < 2.0; ++i) {
